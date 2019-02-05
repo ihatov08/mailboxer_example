@@ -7,6 +7,21 @@
   %b Email:
   = @user.email
 
+%br
+
+%h3 conversatios
+- @user.mailbox.conversations.each do |c|
+  %p
+    %b Id:
+    = c.id
+  %p
+    %b Subject:
+    = c.subject
+  %p
+    %b Created at
+    = c.created_at
+  %br
+
 = link_to 'Edit', edit_user_path(@user)
 \|
 = link_to 'Back', users_path
