@@ -1,0 +1,13 @@
+%h1 Listing Sentbox
+
+%table
+  %thread
+    %tr
+      %th Id
+      %th Subject
+
+  %tbody
+    - @sentbox.each do |i|
+      %tr
+        %td= i.id
+        %td= link_to i.subject, user_conversation_path(id: i.id, user_id: @user.id)

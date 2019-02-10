@@ -10,18 +10,26 @@
 %br
 
 %h3 conversatios
-- @user.mailbox.conversations.each do |c|
-  %p
-    %b Id:
-    = c.id
-  %p
-    %b Subject:
-    = c.subject
-  %p
-    %b Created at
-    = c.created_at
-  %br
+= link_to "conversations", user_conversations_path(user_id: @user.id)
 
 = link_to 'Edit', edit_user_path(@user)
 \|
 = link_to 'Back', users_path
+\|
+= link_to "Inbox", user_inboxes_path(user_id: @user.id)
+\|
+= link_to "SentBox", user_sentboxes_path(user_id: @user.id)
+
+%h3 Receipts
+%table
+  %thread
+    %tr
+      %th Id
+      %th Receiver
+      %th MailboxType
+  %tbody
+    - @user.receipts.each do |r|
+      %tr
+        %td= r.id
+        %td= r.receiver_type.constantize.find(r.receiver_id).name
+        %td= r.mailbox_type

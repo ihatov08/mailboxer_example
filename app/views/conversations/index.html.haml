@@ -1,0 +1,25 @@
+%h1 Listing conversations
+
+%table
+  %thead
+    %tr
+      %th Id
+      %th Subject
+      %th Recepits
+      %th Participants
+      %th Created at
+      %th
+      %th
+      %th
+
+  %tbody
+    - @conversations.each do |c|
+      %tr
+        %td= c.id
+        %td= c.subject
+        %td= c.receipts.map{ |r| r.receiver.name }.uniq.join(",")
+        %td= c.participants.map{ |par| par.name}.uniq.join(",")
+        %td= c.created_at
+        %td= link_to 'Show', user_conversation_path(id: c.id, user_id: @user.id)
+
+= link_to "New Conversation", new_user_conversation_path(user_id: @user.id)

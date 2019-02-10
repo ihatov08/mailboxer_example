@@ -1,0 +1,15 @@
+= form_with(url: user_conversations_path, local: true) do |f|
+  .field
+    = f.label :body
+    = f.text_field :body
+
+  .field
+    = f.label :subject
+    = f.text_field :subject
+
+  .field
+    = f.label :recipient
+    = f.collection_select :recipient_id, User.where.not(id: @user.id), :id, :name
+
+  .actions
+    = f.submit 'Send Message'

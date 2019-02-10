@@ -1,0 +1,54 @@
+%p
+  %b Id:
+  = @conversation.id
+
+%p
+  %b Subject:
+  = @conversation.subject
+
+%h2 Messages
+%table
+  %thead
+    %tr
+      %th Id
+      %th Type
+      %th Body
+      %th Subject
+      %th SenderType
+      %th Sender
+      %th Draft
+      %th IsRead
+      %th タイプ
+
+  %tbody
+    - @conversation.messages.each do |message|
+      %tr{ style: message.sender == @user ? "" : "color: red;" }
+        %td= message.id
+        %td= message.type
+        %td= message.body
+        %td= message.subject
+        %td= message.sender_type
+        %td= message.sender_type.constantize.find(message.sender_id).email
+        %td= message.draft
+        %td= message.receipts.where.not(receiver: @user).first.is_read
+        %td= message.sender == @user ? "送信" : "受信"
+%h3 Replay to Conversation
+= form_with(url: user_conversation_reply_to_conversation_path(conversation_id: @conversation.id), local: true) do |f|
+  .field
+    = f.label :body
+    = f.text_field :body
+  .actions
+    = f.submit "Reply"
+
+%h2 Receipts
+%table
+  %thread
+    %tr
+      %th Message
+      %th Read
+
+  %tbody
+    - @conversation.receipts.each do |r|
+      %tr
+        %td subject: #{r.message.subject} body: #{r.message.body} sender #{r.message.sender.name}
+        %td= r.is_unread?
